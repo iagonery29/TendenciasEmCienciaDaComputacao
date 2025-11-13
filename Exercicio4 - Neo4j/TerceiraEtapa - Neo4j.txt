@@ -1,0 +1,37 @@
+1. Atualizar o estado civil de Carol para “Casada”:
+
+MATCH (c:Pessoa {nome: 'Carol'})
+SET c.estado_civil = 'Casada'
+RETURN c;
+
+2. Excluir Gabriel da rede (remoção completa do nó e seus relacionamentos):
+
+MATCH (g:Pessoa {nome: 'Gabriel'})
+DETACH DELETE g;
+
+3. Cadastrar nova usuária Linda:
+
+CREATE (l:Pessoa {nome: 'Linda', pais: 'EUA', estado_civil: 'Solteira'})
+RETURN l;
+
+4. Fazer com que Linda siga Carol e Carol siga Linda:
+
+MATCH (l:Pessoa {nome: 'Linda'}), (c:Pessoa {nome: 'Carol'})
+CREATE (l)-[:SEGUE]->(c),
+       (c)-[:SEGUE]->(l);
+
+5. Linda adiciona uma foto com legenda “Ingressando na rede!”:
+
+MATCH (l:Pessoa {nome: 'Linda'})
+CREATE (l)-[:ADICIONOU]->(f:Foto {legenda: 'Ingressando na rede!'})
+RETURN f;
+
+6. Carol curte a foto de Linda, com a data de hoje:
+
+MATCH (c:Pessoa {nome: 'Carol'}), (f:Foto {legenda: 'Ingressando na rede!'})
+CREATE (c)-[:CURTIU {data: date('2025-10-12')}]->(f);
+
+7. Consultar a quantidade de curtidas que uma foto recebeu:
+
+MATCH (p:Pessoa)-[:CURTIU]->(f:Foto)
+RETURN f.legenda AS Legenda, COUNT(p) AS QuantidadeCurtidas;

@@ -1,0 +1,40 @@
+Inserir os objetos chave-valor em três buckets diferentes:
+
+# Professores
+curl -XPUT http://localhost:8098/buckets/professores/keys/Thyago \
+  -H "Content-Type: application/json" \
+  -d '{"idade": 35}'
+
+curl -XPUT http://localhost:8098/buckets/professores/keys/Afonso \
+  -H "Content-Type: application/json" \
+  -d '{"idade": 28}'
+
+# Alunos
+curl -XPUT http://localhost:8098/buckets/alunos/keys/Fernanda \
+  -H "Content-Type: application/json" \
+  -d '{"idade": 32}'
+
+curl -XPUT http://localhost:8098/buckets/alunos/keys/Theo \
+  -H "Content-Type: application/json" \
+  -d '{"idade": 12}'
+
+# Funcionários
+curl -XPUT http://localhost:8098/buckets/funcionarios/keys/Sophia \
+  -H "Content-Type: application/json" \
+  -d '{"idade": 20}'
+
+curl -XPUT http://localhost:8098/buckets/funcionarios/keys/Leonardo \
+  -H "Content-Type: application/json" \
+  -d '{"idade": 15}'
+
+
+Listar todas as chaves de cada bucket separadamente:
+
+
+curl http://localhost:8098/buckets/professores/keys?keys=true
+
+
+curl http://localhost:8098/buckets/alunos/keys?keys=true
+
+
+curl http://localhost:8098/buckets/funcionarios/keys?keys=true

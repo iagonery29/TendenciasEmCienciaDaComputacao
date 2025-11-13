@@ -1,0 +1,5 @@
+1. Encontre o caminho mais curto entre Rafael e Ana:
+
+MATCH (r:Pessoa {nome: 'Rafael'}), (a:Pessoa {nome: 'Ana'}),
+p = shortestPath((r)-[:SEGUE*]-(a))
+RETURN p;

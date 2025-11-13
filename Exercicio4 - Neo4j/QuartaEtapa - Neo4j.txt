@@ -1,0 +1,39 @@
+CREATE
+  (rafael:Pessoa {nome: 'Rafael'}),
+  (ana:Pessoa {nome: 'Ana'}),
+  (paulo:Pessoa {nome: 'Paulo'}),
+  (carol:Pessoa {nome: 'Carol'}),
+  (franciele:Pessoa {nome: 'Franciele'}),
+  (gabriel:Pessoa {nome: 'Gabriel'}),
+  (renata:Pessoa {nome: 'Renata'});
+
+
+// Rafael → Ana
+MATCH (rafael:Pessoa {nome: 'Rafael'}), (ana:Pessoa {nome: 'Ana'})
+CREATE (rafael)-[:SEGUE]->(ana);
+
+// Ana ↔ Paulo (seguem-se mutuamente)
+MATCH (ana:Pessoa {nome: 'Ana'}), (paulo:Pessoa {nome: 'Paulo'})
+CREATE (ana)-[:SEGUE]->(paulo),
+       (paulo)-[:SEGUE]->(ana);
+
+// Paulo → Carol
+MATCH (paulo:Pessoa {nome: 'Paulo'}), (carol:Pessoa {nome: 'Carol'})
+CREATE (paulo)-[:SEGUE]->(carol);
+
+// Franciele → Gabriel
+MATCH (franciele:Pessoa {nome: 'Franciele'}), (gabriel:Pessoa {nome: 'Gabriel'})
+CREATE (franciele)-[:SEGUE]->(gabriel);
+
+// Gabriel ↔ Renata (seguem-se mutuamente)
+MATCH (gabriel:Pessoa {nome: 'Gabriel'}), (renata:Pessoa {nome: 'Renata'})
+CREATE (gabriel)-[:SEGUE]->(renata),
+       (renata)-[:SEGUE]->(gabriel);
+
+// Gabriel → Carol
+MATCH (gabriel:Pessoa {nome: 'Gabriel'}), (carol:Pessoa {nome: 'Carol'})
+CREATE (gabriel)-[:SEGUE]->(carol);
+
+
+MATCH (n)-[r]->(m)
+RETURN n, r, m;

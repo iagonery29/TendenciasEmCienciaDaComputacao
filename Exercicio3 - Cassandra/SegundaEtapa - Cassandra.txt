@@ -1,0 +1,16 @@
+1.
+UPDATE unipe.cadastro 
+SET cargo = 'funcionario' 
+WHERE id = 04b57f0e-33df-11e5-a151-feff819cdc9f;
+
+2. 
+DELETE FROM unipe.cadastro 
+WHERE id = 1a8d649a-33df-11e5-a151-feff819cdc9f;
+
+3.
+SELECT * FROM unipe.cadastro 
+WHERE cargo = 'professor' ALLOW FILTERING;
+
+4.
+SELECT * FROM unipe.cadastro 
+WHERE cargo = 'aluno' ALLOW FILTERING;

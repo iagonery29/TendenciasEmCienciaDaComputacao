@@ -1,0 +1,24 @@
+1.
+CREATE (gabriel:Pessoa {
+    nome: 'Gabriel',
+    pais: 'Canadá',
+    estado_civil: 'Namorando'
+});
+
+CREATE (carol:Pessoa {
+    nome: 'Carol',
+    pais: 'Brasil'
+});
+
+CREATE (foto:Foto {
+    legenda: 'Meu cachorro'
+});
+
+
+CREATE (gabriel)-[:SEGUE]->(carol);
+CREATE (gabriel)-[:SEGUE]->(foto);
+CREATE (carol)-[:ADICIONOU]->(foto);
+CREATE (gabriel)-[:CURTIU {data: date('2019-01-01')}]->(foto);
+
+
+MATCH (n) RETURN n;

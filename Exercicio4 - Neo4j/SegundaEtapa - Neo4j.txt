@@ -1,0 +1,30 @@
+1. O nome e o país de um usuário:
+
+MATCH (p:Pessoa)
+RETURN p.nome AS Nome, p.pais AS Pais;
+
+2. A legenda de todas as fotos de um usuário:
+
+MATCH (p:Pessoa {nome: 'Gabriel'})-[:ADICIONOU]->(f:Foto)
+RETURN f.legenda AS Legenda;
+
+3. A quantidade de pessoas que segue um usuário:
+
+MATCH (p:Pessoa)-[:SEGUE]->(seguido:Pessoa {nome: 'Carol'})
+RETURN COUNT(p) AS QuantidadeDeSeguidores;
+
+4. A quantidade de fotos publicadas:
+
+MATCH (p:Pessoa)-[:ADICIONOU]->(f:Foto)
+RETURN p.nome AS Nome, COUNT(f) AS QuantidadeDeFotos;
+
+5. Nome dos usuários que não possuam Estado Civil cadastrado:
+
+MATCH (p:Pessoa)
+WHERE NOT EXISTS(p.estado_civil)
+RETURN p.nome AS Nome;
+
+6. A quantidade de curtidas que uma foto recebeu:
+
+MATCH (p:Pessoa)-[:CURTIU]->(f:Foto)
+RETURN f.legenda AS Legenda, COUNT(p) AS QuantidadeCurtidas;
