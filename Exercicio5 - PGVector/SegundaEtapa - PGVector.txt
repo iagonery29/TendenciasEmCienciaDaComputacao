@@ -1,0 +1,17 @@
+3. Criação de Tabela Vetorial:
+
+CREATE TABLE documentos (
+    id SERIAL PRIMARY KEY,
+    titulo TEXT,
+    conteudo TEXT,
+    embedding VECTOR(3)
+);
+
+4. Inserção de Vetores:
+
+INSERT INTO documentos (titulo, conteudo, embedding) VALUES
+('PostgreSQL e IA', 'Explorando o uso de vetores no PostgreSQL com pgvector.', '[0.12, 0.45, 0.88]'),
+('Pesquisa Semântica', 'Como usar embeddings para busca inteligente.', '[0.33, 0.56, 0.91]'),
+('Modelos de Linguagem', 'Introdução aos modelos de linguagem e embeddings.', '[0.25, 0.48, 0.80]'),
+('Busca Vetorial', 'Indexação e similaridade com base em distância de cosseno.', '[0.40, 0.50, 0.95]'),
+('BM25 e Vetores', 'Combinação de ranking lexical e vetorial em bancos de dados.', '[0.10, 0.20, 0.70]');

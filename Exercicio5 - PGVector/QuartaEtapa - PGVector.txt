@@ -1,0 +1,22 @@
+8. Índice IVFFLAT:
+
+CREATE INDEX documentos_embedding_idx
+ON documentos
+USING ivfflat (embedding vector_cosine_ops);
+
+9. Ajuste de Parâmetros (lists = 100):
+
+DROP INDEX IF EXISTS documentos_embedding_idx;
+
+CREATE INDEX documentos_embedding_idx
+ON documentos
+USING ivfflat (embedding vector_cosine_ops)
+WITH (lists = 100);
+
+10. Index Scan:
+
+EXPLAIN ANALYZE
+SELECT id, titulo, embedding
+FROM documentos
+ORDER BY embedding <=> '[0.8, 0.1, 0.3]'
+LIMIT 3;

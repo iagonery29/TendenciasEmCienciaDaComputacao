@@ -1,0 +1,9 @@
+1.Instalação da Extensão:
+
+CREATE DATABASE ia_semantica;
+\c ia_semantica;
+CREATE EXTENSION IF NOT EXISTS vector;
+
+2. Verificação da Extensão:
+
+\dx

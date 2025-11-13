@@ -1,0 +1,69 @@
+14. Inserção em Massa:
+
+INSERT INTO documentos (titulo, conteudo, embedding)
+SELECT 
+    'Documento ' || i,
+    'Conteúdo simulado ' || i,
+    ARRAY[random(), random(), random()]::vector(3)
+FROM generate_series(1, 100) AS s(i);
+
+15. Normalização de Vetores:
+
+ALTER TABLE documentos
+ADD COLUMN embedding_normalizado vector(3);
+
+UPDATE documentos
+SET embedding_normalizado = embedding / sqrt(power(embedding[1],2) + power(embedding[2],2) + power(embedding[3],2));
+
+16. Atualização Automática (Trigger):
+
+CREATE OR REPLACE FUNCTION atualizar_embedding_normalizado()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.embedding_normalizado :=
+    NEW.embedding / sqrt(
+      power(NEW.embedding[1],2) +
+      power(NEW.embedding[2],2) +
+      power(NEW.embedding[3],2)
+    );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_normalizar_embedding
+BEFORE INSERT OR UPDATE OF embedding
+ON documentos
+FOR EACH ROW
+EXECUTE FUNCTION atualizar_embedding_normalizado();
+
+17. Armazenamento em JSONB:
+
+ALTER TABLE documentos
+ADD COLUMN metadados JSONB;
+
+-- Inserir alguns metadados de exemplo
+UPDATE documentos
+SET metadados = jsonb_build_object(
+    'autor', 'Iago Nery',
+    'data', now(),
+    'categoria', CASE 
+        WHEN id % 3 = 0 THEN 'IA'
+        WHEN id % 3 = 1 THEN 'Banco de Dados'
+        ELSE 'Pesquisa'
+    END
+)
+WHERE metadados IS NULL;
+
+18. Consulta por Metadados:
+
+SELECT
+    id,
+    titulo,
+    metadados,
+    1 - (embedding_normalizado <=> '[0.7, 0.2, 0.6]') AS similaridade
+FROM documentos
+WHERE metadados->>'categoria' = 'IA'
+  AND (1 - (embedding_normalizado <=> '[0.7, 0.2, 0.6]')) > 0.8
+ORDER BY similaridade DESC
+LIMIT 10;
+

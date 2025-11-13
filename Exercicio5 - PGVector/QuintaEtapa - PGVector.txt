@@ -1,0 +1,50 @@
+11. Extensão pg_trgm e tsvector:
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+ALTER TABLE documentos
+ADD COLUMN texto_tsv tsvector GENERATED ALWAYS AS (
+    to_tsvector('portuguese', conteudo)
+) STORED;
+
+CREATE INDEX documentos_tsv_idx
+ON documentos
+USING GIN (texto_tsv);
+
+12. Consulta BM25:
+
+SELECT 
+    id,
+    titulo,
+    conteudo,
+    ts_rank_cd(texto_tsv, plainto_tsquery('portuguese', 'inteligência')) AS bm25_score
+FROM documentos
+WHERE texto_tsv @@ plainto_tsquery('portuguese', 'inteligência')
+ORDER BY bm25_score DESC
+LIMIT 5;
+
+13. Combinação Híbrida (Vetorial + BM25):
+
+
+WITH busca AS (
+    SELECT
+        id,
+        titulo,
+        conteudo,
+        -- Similaridade vetorial (quanto menor, mais próximo)
+        1 - (embedding <=> '[0.8, 0.1, 0.3]') AS cosine_sim,
+        -- Relevância textual (BM25)
+        ts_rank_cd(texto_tsv, plainto_tsquery('portuguese', 'inteligência')) AS bm25_score
+    FROM documentos
+)
+SELECT
+    id,
+    titulo,
+    conteudo,
+    cosine_sim,
+    bm25_score,
+    -- Combinação ponderada (ajustável)
+    (0.7 * cosine_sim + 0.3 * bm25_score) AS score_hibrido
+FROM busca
+ORDER BY score_hibrido DESC
+LIMIT 5;

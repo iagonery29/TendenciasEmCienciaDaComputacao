@@ -1,0 +1,32 @@
+5. Similaridade Cosseno:
+
+SELECT 
+    id,
+    titulo,
+    embedding,
+    embedding <=> '[0.8, 0.1, 0.3]' AS distancia_cosseno
+FROM documentos
+ORDER BY embedding <=> '[0.8, 0.1, 0.3]'
+LIMIT 3;
+
+6. Distância Euclidiana (L2 Distance):
+
+SELECT 
+    id,
+    titulo,
+    embedding,
+    embedding <-> '[0.8, 0.1, 0.3]' AS distancia_euclidiana
+FROM documentos
+ORDER BY embedding <-> '[0.8, 0.1, 0.3]'
+LIMIT 3;
+
+7. Inner Product:
+
+SELECT 
+    id,
+    titulo,
+    embedding,
+    embedding <#> '[0.8, 0.1, 0.3]' AS inner_product_score
+FROM documentos
+ORDER BY embedding <#> '[0.8, 0.1, 0.3]'
+LIMIT 3;

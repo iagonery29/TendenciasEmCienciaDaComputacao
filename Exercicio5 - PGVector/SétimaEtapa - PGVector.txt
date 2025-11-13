@@ -1,0 +1,19 @@
+19. Normalização e Similaridade Média:
+
+SELECT 
+    AVG(embedding_normalizado <=> d2.embedding_normalizado) AS media_distancia_cosseno
+FROM documentos d1
+JOIN documentos d2 ON d1.id < d2.id;
+
+20. Top-N Mais Semelhantes:
+
+CREATE OR REPLACE VIEW vw_top_similares AS
+SELECT
+    d1.id               AS id_documento,
+    d1.titulo           AS titulo_origem,
+    d2.id               AS id_similar,
+    d2.titulo           AS titulo_similar,
+    1 - (d1.embedding_normalizado <=> d2.embedding_normalizado) AS similaridade
+FROM documentos d1
+JOIN documentos d2 ON d1.id <> d2.id
+ORDER BY d1.id, similaridade DESC;
